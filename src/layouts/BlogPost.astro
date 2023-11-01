@@ -13,6 +13,7 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 <html lang="en">
   <head>
     <BaseHead title={title} description={description} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <style>
       main {
         width: calc(100% - 2em);
