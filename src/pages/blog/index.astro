@@ -96,6 +96,7 @@ const posts =
             posts.map((post) => (
               <li>
                 <a href={`/blog/${post.slug}/`}>
+                  <!-- @ts-ignore -->
                   <Image src={post.data.heroImage} alt="" />
                   <h4 class="title">{post.data.title}</h4>
                   <p class="date">
