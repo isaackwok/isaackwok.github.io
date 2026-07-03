@@ -1,0 +1,24 @@
+---
+interface Props {
+    kanji: string;
+    label: string;
+}
+
+const { kanji, label } = Astro.props;
+---
+
+<section class="relative mt-28 sm:mt-36">
+    <span
+        class="tategaki absolute -left-14 top-1 hidden select-none font-display text-sm text-hai/70 lg:block"
+        aria-hidden="true">{kanji}</span
+    >
+    <h2 class="text-xs font-medium tracking-[0.35em] text-hai uppercase">
+        <span
+            class="mr-3 font-display text-sm normal-case tracking-[0.3em] lg:hidden"
+            aria-hidden="true">{kanji}</span
+        >{label}
+    </h2>
+    <div class="mt-8">
+        <slot />
+    </div>
+</section>

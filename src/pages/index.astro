@@ -1,11 +1,65 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Section from '../components/Section.astro';
 ---
 
 <Layout>
-	<Welcome />
+	<main class="relative z-10 mx-auto max-w-xl px-6 pt-28 pb-24 sm:px-8 sm:pt-44 sm:pb-32">
+		<!-- Hero -->
+		<header>
+			<p class="text-xs font-medium tracking-[0.35em] text-hai uppercase">
+				Software engineer
+			</p>
+			<h1 class="mt-6 font-display text-5xl font-medium tracking-tight sm:text-6xl">
+				Isaac Kwok
+			</h1>
+			<p class="mt-8 max-w-md leading-loose text-hai">
+				I build quiet, careful software for the web — the kind that gets out of
+				your way and lets the work breathe.
+			</p>
+		</header>
+
+		<Section kanji="人" label="About">
+			<p class="leading-loose">
+				I care about the small things: type that reads well, interfaces that
+				respond gently, code that the next person can pick up without a map.
+				Most of my days are spent somewhere between design and engineering,
+				trying to close the gap between the two.
+			</p>
+		</Section>
+
+		<Section kanji="仕事" label="Work">
+			<ul class="space-y-12">
+				<!-- Add projects here: copy an <li> and replace title, year, and description. -->
+				<li>
+					<a href="/" class="group inline-block">
+						<span
+							class="font-display text-xl font-medium underline decoration-hinata/40 decoration-1 underline-offset-8 transition-colors group-hover:decoration-hinata"
+							>isaackwok.com</span
+						>
+						<span class="ml-3 text-sm text-hai">2026</span>
+					</a>
+					<p class="mt-3 leading-loose text-hai">
+						This site — ink on warm paper, with a little sunlight. Built with
+						Astro and Tailwind.
+					</p>
+				</li>
+			</ul>
+		</Section>
+
+		<Section kanji="連絡" label="Contact">
+			<p class="leading-loose">
+				The inbox is always open. Say hello at <a
+					href="mailto:kch062522@gmail.com"
+					class="font-medium text-hinata underline decoration-hinata/40 decoration-1 underline-offset-4 transition-colors hover:decoration-hinata"
+					>kch062522@gmail.com</a
+				>.
+			</p>
+		</Section>
+
+		<footer class="mt-32 flex items-baseline justify-between text-sm text-hai sm:mt-40">
+			<p>&copy; 2026 Isaac Kwok</p>
+			<p class="font-display select-none" aria-hidden="true">郭</p>
+		</footer>
+	</main>
 </Layout>

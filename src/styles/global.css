@@ -1,1 +1,102 @@
 @import "tailwindcss";
+
+@theme {
+  /* 紙 kami — warm paper white */
+  --color-kami: #fffdf8;
+  /* 墨 sumi — warm ink black */
+  --color-sumi: #1c1915;
+  /* 灰 hai — warm gray, secondary text */
+  --color-hai: #6e6a62;
+  /* 陽 hinata — deep sunlight, links & accents (AA on kami) */
+  --color-hinata: #96690f;
+  /* 木漏れ日 komorebi — the light itself, glow only */
+  --color-komorebi: #fbe9c4;
+
+  --font-display: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-kami);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--color-sumi);
+    background-color: var(--color-kami);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-komorebi);
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--color-hinata);
+    outline-offset: 4px;
+    border-radius: 1px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* Washi grain — a barely-there paper texture over everything */
+.washi::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.3;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.52 0 0 0 0 0.46 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Sunlight — one soft patch of afternoon light falling across the paper */
+.sunlight {
+  position: fixed;
+  top: -22vh;
+  right: -14vw;
+  width: 72vw;
+  height: 80vh;
+  min-width: 30rem;
+  min-height: 30rem;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 9999px;
+  background: radial-gradient(
+    closest-side,
+    var(--color-komorebi) 0%,
+    rgba(251, 233, 196, 0.45) 45%,
+    transparent 100%
+  );
+  filter: blur(48px);
+  animation: sun-drift 60s ease-in-out infinite alternate;
+}
+
+@keyframes sun-drift {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(-6vw, 7vh) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sunlight {
+    animation: none;
+  }
+}
+
+/* 縦書き tategaki — vertical section markers in the margin */
+.tategaki {
+  writing-mode: vertical-rl;
+  letter-spacing: 0.5em;
+}
