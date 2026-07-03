@@ -1,0 +1,13 @@
+---
+interface Props {
+    company: string;
+    period?: string;
+}
+
+const { company, period } = Astro.props;
+---
+
+<li class="flex items-baseline justify-between gap-6">
+    <span class="font-display font-medium">{company}</span>
+    {period && <span class="text-sm text-hai">{period}</span>}
+</li>

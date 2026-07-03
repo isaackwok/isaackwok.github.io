@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Section from "../components/Section.astro";
+import * as WorkExperience from "../components/WorkExperience";
 ---
 
 <Layout>
@@ -31,24 +32,12 @@ import Section from "../components/Section.astro";
         </Section>
 
         <Section kanji="仕事" label="Work">
-            <!-- Each entry: company on the left, period on the right. -->
-            <ul class="space-y-6">
-                <li class="flex items-baseline justify-between gap-6">
-                    <span class="font-display font-medium">LINE GO</span>
-                    <span class="text-sm text-hai">Present</span>
-                </li>
-                <li class="flex items-baseline justify-between gap-6">
-                    <span class="font-display font-medium">Uto.ai</span>
-                </li>
-                <li class="flex items-baseline justify-between gap-6">
-                    <span class="font-display font-medium"
-                        >Bahwan CyberTek</span
-                    >
-                </li>
-                <li class="flex items-baseline justify-between gap-6">
-                    <span class="font-display font-medium">Shopee</span>
-                </li>
-            </ul>
+            <WorkExperience.List>
+                <WorkExperience.Row company="LINE GO" period="Present" />
+                <WorkExperience.Row company="Uto.ai" />
+                <WorkExperience.Row company="Bahwan CyberTek" />
+                <WorkExperience.Row company="Shopee" />
+            </WorkExperience.List>
         </Section>
 
         <Section kanji="連絡" label="Contact">
