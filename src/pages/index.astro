@@ -31,20 +31,22 @@ import Section from "../components/Section.astro";
         </Section>
 
         <Section kanji="仕事" label="Work">
-            <ul class="space-y-12">
-                <!-- Add projects here: copy an <li> and replace title, year, and description. -->
-                <li>
-                    <a href="/" class="group inline-block">
-                        <span
-                            class="font-display text-xl font-medium underline decoration-hinata/40 decoration-1 underline-offset-8 transition-colors group-hover:decoration-hinata"
-                            >isaackwok.com</span
-                        >
-                        <span class="ml-3 text-sm text-hai">2026</span>
-                    </a>
-                    <p class="mt-3 leading-loose text-hai">
-                        This site — ink on warm paper, with a little sunlight.
-                        Built with Astro and Tailwind.
-                    </p>
+            <!-- Each entry: company on the left, period on the right. -->
+            <ul class="space-y-6">
+                <li class="flex items-baseline justify-between gap-6">
+                    <span class="font-display font-medium">LINE GO</span>
+                    <span class="text-sm text-hai">Present</span>
+                </li>
+                <li class="flex items-baseline justify-between gap-6">
+                    <span class="font-display font-medium">Uto.ai</span>
+                </li>
+                <li class="flex items-baseline justify-between gap-6">
+                    <span class="font-display font-medium"
+                        >Bahwan CyberTek</span
+                    >
+                </li>
+                <li class="flex items-baseline justify-between gap-6">
+                    <span class="font-display font-medium">Shopee</span>
                 </li>
             </ul>
         </Section>
