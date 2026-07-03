@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  /* 紙 kami — warm paper white */
-  --color-kami: #fffdf8;
+  /* 紙 kami — plain white */
+  --color-kami: #ffffff;
   /* 墨 sumi — warm ink black */
   --color-sumi: #1c1915;
   /* 灰 hai — warm gray, secondary text */
@@ -58,39 +58,67 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.52 0 0 0 0 0.46 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Sunlight — one soft patch of afternoon light falling across the paper */
-.sunlight {
+/* Window light — sunlight cast through a window onto the wall:
+   pale panes of light divided by the soft shadow of the frame */
+.window-light {
   position: fixed;
-  top: -22vh;
-  right: -14vw;
-  width: 72vw;
-  height: 80vh;
-  min-width: 30rem;
-  min-height: 30rem;
+  top: -8rem;
+  right: -7rem;
+  width: 36rem;
+  height: 52rem;
   z-index: 0;
   pointer-events: none;
-  border-radius: 9999px;
-  background: radial-gradient(
-    closest-side,
-    var(--color-komorebi) 0%,
-    rgba(251, 233, 196, 0.45) 45%,
-    transparent 100%
+  transform: rotate(16deg) skewY(-4deg);
+  background-color: rgba(255, 243, 216, 0.5);
+  background-image:
+    /* vertical muntin shadows */
+    repeating-linear-gradient(
+      90deg,
+      rgba(28, 25, 21, 0.07) 0,
+      rgba(28, 25, 21, 0.07) 0.7rem,
+      transparent 0.7rem,
+      transparent 11rem
+    ),
+    /* horizontal muntin shadows */
+    repeating-linear-gradient(
+      0deg,
+      rgba(28, 25, 21, 0.07) 0,
+      rgba(28, 25, 21, 0.07) 0.7rem,
+      transparent 0.7rem,
+      transparent 12.5rem
+    );
+  filter: blur(10px);
+  mask-image: radial-gradient(
+    ellipse 70% 60% at 55% 42%,
+    black 35%,
+    transparent 78%
   );
-  filter: blur(48px);
-  animation: sun-drift 60s ease-in-out infinite alternate;
+  animation: sun-drift 90s ease-in-out infinite alternate;
 }
 
 @keyframes sun-drift {
   from {
-    transform: translate(0, 0) scale(1);
+    transform: rotate(16deg) skewY(-4deg) translate(0, 0);
   }
   to {
-    transform: translate(-6vw, 7vh) scale(1.08);
+    transform: rotate(15deg) skewY(-4deg) translate(-2rem, 2.5rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .window-light {
+    top: -6rem;
+    right: -8rem;
+    width: 24rem;
+    height: 32rem;
+    background-size:
+      7.5rem 100%,
+      100% 8.5rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sunlight {
+  .window-light {
     animation: none;
   }
 }
