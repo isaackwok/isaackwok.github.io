@@ -1,0 +1,19 @@
+---
+interface Props {
+    label: string;
+    href: string;
+}
+
+const { label, href } = Astro.props;
+---
+
+<div class="flex items-baseline gap-6">
+    <dt class="w-20 shrink-0 text-sm text-hai">{label}</dt>
+    <dd>
+        <a
+            href={href}
+            class="font-medium text-hinata underline decoration-hinata/40 decoration-1 underline-offset-4 transition-colors hover:decoration-hinata"
+            ><slot /></a
+        >
+    </dd>
+</div>
