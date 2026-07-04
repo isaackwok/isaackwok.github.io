@@ -18,6 +18,8 @@
 
 @layer base {
   html {
+    /* light-only: keeps iOS Safari's canvas white behind transitions */
+    color-scheme: light;
     background-color: var(--color-kami);
     scroll-behavior: smooth;
   }
@@ -95,9 +97,15 @@
 
 /*
  * Safari paints the area behind the transition snapshots black — the live
- * page is skipped while the root element is captured — so the overlay must
- * carry the kami background for the fade to pass through paper white.
+ * page is skipped while the root element is captured — so paper white must
+ * be painted inside the transition tree itself. Both the overlay and the
+ * group are painted white because Safari does not reliably paint the
+ * overlay's own background; the group box is always rendered and does not
+ * fade (only the old/new images inside it do). Literal hex, not
+ * var(--color-kami): custom properties are not reliably resolved on
+ * view-transition pseudo-elements across Safari versions.
  */
-::view-transition {
-  background-color: var(--color-kami);
+::view-transition,
+::view-transition-group(*) {
+  background-color: #fff;
 }
