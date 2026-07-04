@@ -15,14 +15,14 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
                 href={href}
                 aria-current={currentPath === href ? "page" : undefined}
                 class:list={[
-                    "group text-xs font-medium tracking-[0.35em] uppercase transition-colors",
+                    "group flex flex-col gap-y-1.5 text-xs font-medium tracking-[0.35em] uppercase transition-colors sm:block",
                     currentPath === href
                         ? "text-sumi"
                         : "text-hai hover:text-sumi",
                 ]}
             >
                 <span
-                    class="mr-3 font-display text-sm normal-case tracking-[0.3em] transition-colors group-hover:text-hinata"
+                    class="font-display text-sm normal-case tracking-[0.3em] transition-colors group-hover:text-hinata sm:mr-3"
                     aria-hidden="true"
                 >
                     {kanji}
