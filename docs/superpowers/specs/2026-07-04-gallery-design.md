@@ -63,16 +63,20 @@ Photo flow:
 - `<figcaption>` in small `hai` gray text under each image (`text-sm`,
   `mt-3`), lowercase voice matching the captions' style.
 - **Orientation rule:** landscape photos render at full container width;
-  portrait photos render at ~70% width, left-aligned. Orientation is computed
+  portrait photos render at 70% width, left-aligned. Orientation is computed
   at build time from the image's intrinsic width/height metadata — no manual
   flags.
+- The page passes `title` / `description` props to `Layout` (which owns all
+  meta tags), keeping the existing "Gallery — Isaac Kwok" title and
+  description.
 - Nav already links `/gallery` (kanji 攝影); no nav changes.
 
 ## Image pipeline & performance
 
 - Astro `<Image />` with the default Sharp service (bundled, zero config).
 - Build-time WebP, two responsive widths (~512px container width, ~1024px for
-  retina), `sizes` matched to the container.
+  retina), `sizes` matched to each photo's rendered width (70% of container
+  for portrait photos).
 - Width/height attributes emitted automatically → zero layout shift.
 - First photo: `loading="eager"` + `fetchpriority="high"`; all others lazy.
 - GitHub Actions performs all image processing at deploy; originals live in
