@@ -15,6 +15,7 @@ const {
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL("/og.png", Astro.site);
 
 const personSchema = {
     "@context": "https://schema.org",
@@ -23,7 +24,10 @@ const personSchema = {
     jobTitle: "Software Engineer",
     url: Astro.site?.toString(),
     email: "mailto:isaac.kwokch@gmail.com",
-    sameAs: ["https://www.linkedin.com/in/isaac-kwok-026b2a184/"],
+    sameAs: [
+        "https://www.linkedin.com/in/isaac-kwok-026b2a184/",
+        "https://github.com/isaackwok",
+    ],
 };
 
 /*
@@ -60,6 +64,7 @@ const pageTransition = { forwards: pageFade, backwards: pageFade };
         />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
+        <meta name="theme-color" content="#ffffff" />
         <meta name="description" content={description} />
         <meta name="author" content="Isaac Kwok" />
         <link rel="canonical" href={canonicalURL} />
@@ -70,10 +75,18 @@ const pageTransition = { forwards: pageFade, backwards: pageFade };
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:site_name" content="Isaac Kwok" />
-        <meta property="og:locale" content="en" />
-        <meta name="twitter:card" content="summary" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta
+            property="og:image:alt"
+            content="Isaac Kwok — Software Engineer"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
         <script
             is:inline
             type="application/ld+json"

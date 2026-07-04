@@ -1,0 +1,26 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "./Nav.astro";
+
+interface Props {
+    title?: string;
+    description?: string;
+}
+
+const { title, description } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<Layout title={title} description={description}>
+    <main class="mx-auto max-w-xl px-6 pt-10 pb-24 sm:px-8 sm:pt-14 sm:pb-32">
+        <Nav />
+
+        <slot />
+
+        <footer
+            class="mt-32 flex items-baseline justify-between text-sm text-hai sm:mt-40"
+        >
+            <p>&copy; {year} Isaac Kwok</p>
+        </footer>
+    </main>
+</Layout>

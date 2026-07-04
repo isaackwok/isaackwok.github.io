@@ -14,7 +14,8 @@
 
 ## Layout & pages
 
-- `Layout.astro` owns the entire `<head>`: canonical URL, Open Graph/Twitter meta, JSON-LD Person schema, fonts. Pages pass `title` / `description` props — never add meta tags in a page.
+- `Layout.astro` owns the entire `<head>`: canonical URL, Open Graph/Twitter meta (including the `public/og.png` social card), JSON-LD Person schema, fonts. Pages pass `title` / `description` props — never add meta tags in a page.
+- Every page renders inside `PageShell.astro` (wraps `Layout` and provides the centered `<main>` column, `Nav`, and the © footer with a build-time year) with a `PageHeader.astro` on top for subpages. Don't hand-roll the main/nav/footer frame in a page.
 - Page navigation fades via Astro's `<ClientRouter />`: old page out (0.3s), blank kami hold (0.15s), new page in (0.3s). Timing config in `Layout.astro`, keyframes in `global.css`.
 - `/articles` is an intentional stub rendered with `Placeholder.astro`.
 - `/music` is an album grid with preview playback. Album data lives in `src/data/music.yaml`; a content-collection loader resolves artwork + ~30–90s preview MP3s from the iTunes Lookup API at build time (no keys; visitors never call Apple). The mini-player in `Layout.astro` is `transition:persist`ed so audio survives page navigation. Add an album: append artist/title/`itunesId`/`country`/`spotifyUrl` to `music.yaml` (find the `itunesId` via `https://itunes.apple.com/search?term=<album>&entity=album&country=<storefront>`); restart the dev server to see it — the loader only runs at startup.

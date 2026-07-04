@@ -1,46 +1,27 @@
-# Astro Starter Kit: Basics
+# isaackwok.com
 
-```sh
-pnpm create astro@latest -- --template basics
-```
+Personal site of Isaac Kwok — built with [Astro](https://astro.build) and Tailwind CSS v4, designed around Japanese minimalism: plain *kami* white paper, warm *sumi* ink, and spacing instead of borders.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Pages
 
-## 🚀 Project Structure
+- `/` — hero, about, work experience, contact
+- `/music` — album grid with ~30–90s preview playback (metadata resolved from the iTunes Lookup API at build time; a persistent mini-player survives page navigation)
+- `/gallery` — curated photo flow from a content collection
+- `/articles` — intentional stub, coming soon
 
-Inside of your Astro project, you'll see the following folders and files:
+## Development
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+Requires Node ≥ 22 (`.nvmrc`: 24.14.1) and pnpm.
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+| Command        | Action                                    |
+| :------------- | :---------------------------------------- |
+| `pnpm install` | Install dependencies                      |
+| `pnpm dev`     | Start the dev server at `localhost:4321`  |
+| `pnpm build`   | Build the production site to `./dist/`    |
+| `pnpm preview` | Preview the production build locally      |
 
-## 🧞 Commands
+Content lives in `src/data/` (`music.yaml`, `gallery.yaml`) with photos in `src/assets/gallery/`. See [AGENTS.md](AGENTS.md) for the add-an-album / add-a-photo workflows and the design-system reference.
 
-All commands are run from the root of the project, from a terminal:
+## Deployment
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Every push to `main` deploys to [isaackwok.com](https://isaackwok.com) on GitHub Pages via `.github/workflows/deploy.yml`.
