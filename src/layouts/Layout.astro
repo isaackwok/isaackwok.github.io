@@ -27,23 +27,21 @@ const personSchema = {
 
 /*
  * Sequential page fade: old page fades out (0.3s), the bare kami white
- * holds for 0.15s, then the new page fades in (0.3s). Both animations
- * span the full 0.75s with the phases as keyframe percentages in
- * global.css — animation-delay is off-limits here because Safari
- * doesn't render delayed animations on view-transition snapshots.
- * Easing is per-phase inside the keyframes, so linear here.
+ * holds for 0.15s, then the new page fades in (0.3s, delayed past
+ * out + hold). Keyframes live in global.css.
  */
 const pageFade = {
     old: {
         name: "page-fade-out",
-        duration: "0.75s",
-        easing: "linear",
+        duration: "0.3s",
+        easing: "ease-in",
         fillMode: "both",
     },
     new: {
         name: "page-fade-in",
-        duration: "0.75s",
-        easing: "linear",
+        duration: "0.3s",
+        delay: "0.45s",
+        easing: "ease-out",
         fillMode: "both",
     },
 };
