@@ -48,7 +48,12 @@
   }
 }
 
-/* Washi grain — a barely-there paper texture over everything */
+/*
+ * Washi grain — a barely-there paper texture over everything.
+ * Painted plain (no mix-blend-mode): over kami white, multiply is
+ * visually identical, and iOS Safari flattens full-viewport blend
+ * layers against a black backdrop when snapshotting page transitions.
+ */
 .washi::after {
   content: "";
   position: fixed;
@@ -56,7 +61,6 @@
   z-index: 50;
   pointer-events: none;
   opacity: 0.3;
-  mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.52 0 0 0 0 0.46 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
@@ -96,15 +100,19 @@
 }
 
 /*
- * Safari paints the area behind the transition snapshots black — the live
- * page is skipped while the root element is captured — so paper white must
- * be painted inside the transition tree itself. Both the overlay and the
- * group are painted white because Safari does not reliably paint the
- * overlay's own background; the group box is always rendered and does not
- * fade (only the old/new images inside it do). Literal hex, not
- * var(--color-kami): custom properties are not reliably resolved on
- * view-transition pseudo-elements across Safari versions.
+ * Keep the root out of the transition capture. iOS Safari composites a
+ * captured root's snapshots over a black layer instead of the page
+ * canvas, so the fade must run on <body> (see Layout.astro) while the
+ * live root keeps painting kami white underneath. The pseudo-element
+ * backgrounds are belt-and-braces for engines that leave gaps behind
+ * the snapshots — literal hex, not var(--color-kami), because custom
+ * properties are not reliably resolved on view-transition
+ * pseudo-elements across Safari versions.
  */
+html {
+  view-transition-name: none;
+}
+
 ::view-transition,
 ::view-transition-group(*) {
   background-color: #fff;

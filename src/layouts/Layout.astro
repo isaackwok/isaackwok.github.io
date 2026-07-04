@@ -32,6 +32,12 @@ const personSchema = {
  * global.css — animation-delay is off-limits here because Safari
  * doesn't render delayed animations on view-transition snapshots.
  * Easing is per-phase inside the keyframes, so linear here.
+ *
+ * The animation lives on <body>, not <html>: capturing the root
+ * element makes iOS Safari composite the snapshots over a black
+ * layer instead of the page canvas. With the root left live
+ * (view-transition-name: none in global.css), the kami background
+ * keeps painting underneath while only the body snapshots fade.
  */
 const pageFade = {
     old: {
@@ -52,7 +58,7 @@ const pageTransition = { forwards: pageFade, backwards: pageFade };
 ---
 
 <!doctype html>
-<html lang="en" transition:animate={pageTransition}>
+<html lang="en">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -86,7 +92,7 @@ const pageTransition = { forwards: pageFade, backwards: pageFade };
         />
         <ClientRouter />
     </head>
-    <body class="washi min-h-dvh">
+    <body class="washi min-h-dvh" transition:animate={pageTransition}>
         <slot />
     </body>
 </html>
