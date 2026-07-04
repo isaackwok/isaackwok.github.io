@@ -1,70 +1,58 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Nav from "../components/Nav.astro";
+import PageShell from "../components/PageShell.astro";
 import Section from "../components/Section.astro";
 import * as WorkExperience from "../components/WorkExperience";
 import * as Contact from "../components/Contact";
 ---
 
-<Layout>
-    <main class="mx-auto max-w-xl px-6 pt-10 pb-24 sm:px-8 sm:pt-14 sm:pb-32">
-        <Nav />
-
-        <!-- Hero -->
-        <header class="mt-16 sm:mt-28">
-            <p class="text-xs font-medium tracking-[0.35em] text-hai uppercase">
-                Software engineer
-            </p>
-            <h1
-                class="mt-6 font-display text-5xl font-medium tracking-tight sm:text-6xl"
-            >
-                Isaac Kwok
-            </h1>
-            <p class="mt-8 leading-loose text-hai">
-                Craft software with quiet intention.
-            </p>
-        </header>
-
-        <Section kanji="關於" label="About">
-            <p class="leading-loose">
-                Shape software with attention to detail and feeling.
-            </p>
-            <p class="leading-loose">
-                Where design meets engineering, craft meaningful, warm
-                experiences.
-            </p>
-            <p class="leading-loose">
-                Outside of code — music, photography, coffee.
-            </p>
-        </Section>
-
-        <Section kanji="仕事" label="Work">
-            <WorkExperience.List>
-                <WorkExperience.Row company="LINE GO" period="Present" />
-                <WorkExperience.Row company="Uto.ai" />
-                <WorkExperience.Row company="Bahwan CyberTek" />
-                <WorkExperience.Row company="Shopee" />
-            </WorkExperience.List>
-        </Section>
-
-        <Section kanji="連絡" label="Contact">
-            <p class="leading-loose">The inbox is always open.</p>
-            <Contact.List>
-                <Contact.Row label="Email" href="mailto:isaac.kwokch@gmail.com"
-                    >isaac.kwokch@gmail.com</Contact.Row
-                >
-                <Contact.Row
-                    label="LinkedIn"
-                    href="https://www.linkedin.com/in/isaac-kwok-026b2a184/"
-                    >Isaac Kwok</Contact.Row
-                >
-            </Contact.List>
-        </Section>
-
-        <footer
-            class="mt-32 flex items-baseline justify-between text-sm text-hai sm:mt-40"
+<PageShell>
+    <!-- Hero -->
+    <header class="mt-16 sm:mt-28">
+        <p class="text-xs font-medium tracking-[0.35em] text-hai uppercase">
+            Software engineer
+        </p>
+        <h1
+            class="mt-6 font-display text-5xl font-medium tracking-tight sm:text-6xl"
         >
-            <p>&copy; 2026 Isaac Kwok</p>
-        </footer>
-    </main>
-</Layout>
+            Isaac Kwok
+        </h1>
+        <p class="mt-8 leading-loose text-hai">
+            Craft software with quiet intention.
+        </p>
+    </header>
+
+    <Section kanji="關於" label="About">
+        <p class="leading-loose">
+            Shape software with attention to detail and feeling.
+        </p>
+        <p class="leading-loose">
+            Where design meets engineering, craft meaningful, warm experiences.
+        </p>
+        <p class="leading-loose">
+            Outside of code — music, photography, coffee.
+        </p>
+    </Section>
+
+    <Section kanji="仕事" label="Work">
+        <WorkExperience.List>
+            <WorkExperience.Row company="LINE GO" period="Present" />
+            <WorkExperience.Row company="Uto.ai" />
+            <WorkExperience.Row company="Bahwan CyberTek" />
+            <WorkExperience.Row company="Shopee" />
+        </WorkExperience.List>
+    </Section>
+
+    <Section kanji="連絡" label="Contact">
+        <p class="leading-loose">The inbox is always open.</p>
+        <Contact.List>
+            <Contact.Row label="Email" href="mailto:isaac.kwokch@gmail.com"
+                >isaac.kwokch@gmail.com</Contact.Row
+            >
+            <Contact.Row
+                label="LinkedIn"
+                href="https://www.linkedin.com/in/isaac-kwok-026b2a184/"
+                >Isaac Kwok</Contact.Row
+            >
+        </Contact.List>
+    </Section>
+</PageShell>
