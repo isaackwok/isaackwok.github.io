@@ -1,5 +1,5 @@
 ---
-import { ClientRouter, fade } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 
 import "../styles/global.css";
 
@@ -12,10 +12,33 @@ const {
     title = "Isaac Kwok",
     description = "Personal site of Isaac Kwok — software engineer.",
 } = Astro.props;
+
+/*
+ * Sequential page fade: old page fades out (0.3s), the bare kami white
+ * holds for 0.15s, then the new page fades in (0.3s, delayed past
+ * out + hold). Keyframes live in global.css.
+ */
+const pageFade = {
+    old: {
+        name: "page-fade-out",
+        duration: "0.3s",
+        easing: "ease-in",
+        fillMode: "both",
+    },
+    new: {
+        name: "page-fade-in",
+        duration: "0.3s",
+        delay: "0.45s",
+        easing: "ease-out",
+        fillMode: "both",
+    },
+};
+
+const pageTransition = { forwards: pageFade, backwards: pageFade };
 ---
 
 <!doctype html>
-<html lang="en" transition:animate={fade({ duration: "0.4s" })}>
+<html lang="en" transition:animate={pageTransition}>
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

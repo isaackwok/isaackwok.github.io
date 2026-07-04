@@ -63,3 +63,22 @@
   writing-mode: vertical-rl;
   letter-spacing: 0.5em;
 }
+
+/* Page transition fades — sequenced by the animation config in Layout.astro */
+@keyframes page-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
