@@ -1,14 +1,17 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
 import Section from "../components/Section.astro";
 import * as WorkExperience from "../components/WorkExperience";
 import * as Contact from "../components/Contact";
 ---
 
 <Layout>
-    <main class="mx-auto max-w-xl px-6 pt-28 pb-24 sm:px-8 sm:pt-44 sm:pb-32">
+    <main class="mx-auto max-w-xl px-6 pt-10 pb-24 sm:px-8 sm:pt-14 sm:pb-32">
+        <Nav />
+
         <!-- Hero -->
-        <header>
+        <header class="mt-16 sm:mt-28">
             <p class="text-xs font-medium tracking-[0.35em] text-hai uppercase">
                 Software engineer
             </p>
