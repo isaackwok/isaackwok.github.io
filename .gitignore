@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # claude code worktrees
 .claude/worktrees/
+
+# local planning docs
+docs/
