@@ -1,10 +1,54 @@
 ---
-import Placeholder from "../components/Placeholder.astro";
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import * as Music from "../components/Music";
+
+const albums = (await getCollection("music")).sort(
+    (a, b) => a.data.order - b.data.order,
+);
 ---
 
-<Placeholder
-    title="Music"
-    kanji="音樂"
-    description="Music by Isaac Kwok — sounds and songs."
-    blurb="sounds and songs will live here soon."
-/>
+<Layout
+    title="Music — Isaac Kwok"
+    description="Favorite albums of Isaac Kwok — press play and listen while you browse."
+>
+    <main class="mx-auto max-w-xl px-6 pt-10 pb-24 sm:px-8 sm:pt-14 sm:pb-32">
+        <Nav />
+
+        <header class="relative mt-16 sm:mt-28">
+            <span
+                class="tategaki absolute -left-14 top-1 hidden select-none font-display text-sm text-hai/70 lg:block"
+                aria-hidden="true">音樂</span
+            >
+            <a
+                href="/"
+                class="text-xs font-medium tracking-[0.35em] text-hai uppercase transition-colors hover:text-sumi"
+                >Isaac Kwok</a
+            >
+            <h1
+                class="mt-6 font-display text-4xl font-medium tracking-tight sm:text-5xl"
+            >
+                Music
+            </h1>
+            <p class="mt-8 max-w-md leading-loose text-hai">
+                Albums I keep returning to. Press one to listen while you
+                browse.
+            </p>
+        </header>
+
+        <Music.Grid>
+            {
+                albums.map((album, index) => (
+                    <Music.Cover album={album.data} eager={index < 6} />
+                ))
+            }
+        </Music.Grid>
+
+        <footer
+            class="mt-32 flex items-baseline justify-between text-sm text-hai sm:mt-40"
+        >
+            <p>&copy; 2026 Isaac Kwok</p>
+        </footer>
+    </main>
+</Layout>
