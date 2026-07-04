@@ -16,7 +16,8 @@
 
 - `Layout.astro` owns the entire `<head>`: canonical URL, Open Graph/Twitter meta, JSON-LD Person schema, fonts. Pages pass `title` / `description` props — never add meta tags in a page.
 - Page navigation fades via Astro's `<ClientRouter />`: old page out (0.3s), blank kami hold (0.15s), new page in (0.3s). Timing config in `Layout.astro`, keyframes in `global.css`.
-- `/articles`, `/gallery`, `/music` are intentional stubs rendered with `Placeholder.astro`.
+- `/articles`, `/music` are intentional stubs rendered with `Placeholder.astro`.
+- `/gallery` is a curated photo flow driven by a content collection. Add a photo: drop a JPEG (pre-resized to ~2000px longest edge) into `src/assets/gallery/` and add three lines to `src/data/gallery.yaml` (`image`, `alt`, `caption`); top-to-bottom order is display order.
 
 ## Development
 

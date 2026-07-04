@@ -1,10 +1,78 @@
 ---
-import Placeholder from "../components/Placeholder.astro";
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+
+const photos = (await getCollection("gallery")).sort(
+    (a, b) => a.data.order - b.data.order,
+);
 ---
 
-<Placeholder
-    title="Gallery"
-    kanji="攝影"
+<Layout
+    title="Gallery — Isaac Kwok"
     description="Photo gallery of Isaac Kwok — photographs and moments."
-    blurb="photographs will live here soon."
-/>
+>
+    <main class="mx-auto max-w-xl px-6 pt-10 pb-24 sm:px-8 sm:pt-14 sm:pb-32">
+        <Nav />
+
+        <header class="relative mt-16 sm:mt-28">
+            <span
+                class="tategaki absolute -left-14 top-1 hidden select-none font-display text-sm text-hai/70 lg:block"
+                aria-hidden="true">攝影</span
+            >
+            <a
+                href="/"
+                class="text-xs font-medium tracking-[0.35em] text-hai uppercase transition-colors hover:text-sumi"
+                >Isaac Kwok</a
+            >
+            <h1
+                class="mt-6 font-display text-4xl font-medium tracking-tight sm:text-5xl"
+            >
+                Gallery
+            </h1>
+        </header>
+
+        <div class="mt-20 sm:mt-24">
+            {
+                photos.map((photo, index) => {
+                    const isPortrait =
+                        photo.data.image.height > photo.data.image.width;
+                    return (
+                        <figure
+                            class:list={[
+                                "mt-16 first:mt-0 sm:mt-20",
+                                isPortrait && "w-[70%]",
+                            ]}
+                        >
+                            <Image
+                                src={photo.data.image}
+                                alt={photo.data.alt}
+                                widths={isPortrait ? [384, 768] : [512, 1024]}
+                                sizes={
+                                    isPortrait
+                                        ? "(min-width: 640px) 358px, 70vw"
+                                        : "(min-width: 640px) 512px, calc(100vw - 48px)"
+                                }
+                                format="webp"
+                                quality={80}
+                                loading={index === 0 ? "eager" : "lazy"}
+                                fetchpriority={index === 0 ? "high" : "auto"}
+                                class="w-full"
+                            />
+                            <figcaption class="mt-3 text-sm text-hai">
+                                {photo.data.caption}
+                            </figcaption>
+                        </figure>
+                    );
+                })
+            }
+        </div>
+
+        <footer
+            class="mt-32 flex items-baseline justify-between text-sm text-hai sm:mt-40"
+        >
+            <p>&copy; 2026 Isaac Kwok</p>
+        </footer>
+    </main>
+</Layout>
