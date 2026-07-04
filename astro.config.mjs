@@ -8,6 +8,11 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://isaackwok.com',
   integrations: [sitemap()],
+  image: {
+    // Album artwork comes from Apple's CDN and is optimized into
+    // self-hosted assets at build time.
+    remotePatterns: [{ protocol: 'https', hostname: '**.mzstatic.com' }],
+  },
   vite: {
     plugins: [tailwindcss()]
   }
