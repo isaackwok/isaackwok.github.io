@@ -9,9 +9,21 @@ interface Props {
 }
 
 const {
-    title = "Isaac Kwok",
-    description = "Personal site of Isaac Kwok — software engineer.",
+    title = "Isaac Kwok — Software Engineer",
+    description = "Personal site of Isaac Kwok, a software engineer crafting warm, thoughtful experiences where design meets engineering.",
 } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const personSchema = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Isaac Kwok",
+    jobTitle: "Software Engineer",
+    url: Astro.site?.toString(),
+    email: "mailto:isaac.kwokch@gmail.com",
+    sameAs: ["https://www.linkedin.com/in/isaac-kwok-026b2a184/"],
+};
 
 /*
  * Sequential page fade: old page fades out (0.3s), the bare kami white
@@ -45,7 +57,24 @@ const pageTransition = { forwards: pageFade, backwards: pageFade };
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
         <meta name="description" content={description} />
+        <meta name="author" content="Isaac Kwok" />
+        <link rel="canonical" href={canonicalURL} />
+        <link rel="sitemap" href="/sitemap-index.xml" />
         <title>{title}</title>
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:site_name" content="Isaac Kwok" />
+        <meta property="og:locale" content="en" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <script
+            is:inline
+            type="application/ld+json"
+            set:html={JSON.stringify(personSchema)}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
