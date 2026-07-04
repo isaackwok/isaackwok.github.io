@@ -1,0 +1,11 @@
+- image: ../assets/gallery/sample-harbour.jpg
+  alt: Placeholder gradient in muted harbour blue-gray tones, landscape orientation
+  caption: sample — harbour
+
+- image: ../assets/gallery/sample-alley.jpg
+  alt: Placeholder gradient from warm paper white to ink, portrait orientation
+  caption: sample — alley
+
+- image: ../assets/gallery/sample-field.jpg
+  alt: Placeholder gradient in sunlight gold fading to white, landscape orientation
+  caption: sample — field
