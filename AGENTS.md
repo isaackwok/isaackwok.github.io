@@ -38,7 +38,7 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 ## Deployment
 
-- Every push to `main` deploys to GitHub Pages via `.github/workflows/deploy.yml` (withastro/action, Node 24) — no manual build step.
+- Every push to `main` deploys to GitHub Pages via `.github/workflows/deploy.yml` (withastro/action, Node 24) — no manual build step. The unit tests (`pnpm test`) run first and gate the build/deploy jobs.
 - Custom domain `isaackwok.com` lives in two places that must stay in sync: `public/CNAME` and `site` in `astro.config.mjs`. Canonical URLs and the sitemap both derive from `site`.
 
 ## Documentation
