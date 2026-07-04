@@ -4,18 +4,10 @@ import { z } from "astro/zod";
 import { parse } from "yaml";
 import { readFile } from "node:fs/promises";
 import { lookupAlbum } from "./lib/itunes";
+import { parseGallery } from "./lib/gallery";
 
 const gallery = defineCollection({
-    loader: file("src/data/gallery.yaml", {
-        parser: (text) =>
-            (parse(text) ?? []).map(
-                (entry: Record<string, string>, index: number) => ({
-                    ...entry,
-                    id: entry.image.split("/").pop()!.replace(/\.[^.]+$/, ""),
-                    order: index,
-                }),
-            ),
-    }),
+    loader: file("src/data/gallery.yaml", { parser: parseGallery }),
     schema: ({ image }) =>
         z.object({
             image: image(),
