@@ -31,6 +31,11 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Testing
+
+- `pnpm test` runs the Vitest unit tests (`pnpm test:watch` for watch mode). Tests are colocated: `src/lib/*.test.ts` cover the iTunes lookup and gallery parsing; `src/data/data.test.ts` sanity-checks `gallery.yaml` (images exist, alt/caption present) and `music.yaml` (valid ids, storefronts, Spotify URLs).
+- The gallery loader's parser lives in `src/lib/gallery.ts` (`parseGallery`) so it stays unit-testable — don't inline it back into `content.config.ts`.
+
 ## Deployment
 
 - Every push to `main` deploys to GitHub Pages via `.github/workflows/deploy.yml` (withastro/action, Node 24) — no manual build step.
