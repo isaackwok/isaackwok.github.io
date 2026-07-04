@@ -64,21 +64,40 @@
   letter-spacing: 0.5em;
 }
 
-/* Page transition fades — sequenced by the animation config in Layout.astro */
+/*
+ * Page transition fades — sequenced by the animation config in Layout.astro.
+ * The out → hold → in phases are encoded as keyframe percentages of one
+ * shared 0.75s duration instead of animation-delay: Safari doesn't render
+ * delayed snapshot animations (the new page pops in at full opacity while
+ * the delay elapses), so the hold must live inside the keyframes.
+ */
 @keyframes page-fade-out {
-  from {
+  0% {
     opacity: 1;
+    animation-timing-function: ease-in;
   }
-  to {
+  40%,
+  100% {
     opacity: 0;
   }
 }
 
 @keyframes page-fade-in {
-  from {
+  0%,
+  60% {
     opacity: 0;
+    animation-timing-function: ease-out;
   }
-  to {
+  100% {
     opacity: 1;
   }
+}
+
+/*
+ * Safari paints the area behind the transition snapshots black — the live
+ * page is skipped while the root element is captured — so the overlay must
+ * carry the kami background for the fade to pass through paper white.
+ */
+::view-transition {
+  background-color: var(--color-kami);
 }
