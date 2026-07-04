@@ -33,7 +33,8 @@
     background-color: var(--color-komorebi);
   }
 
-  a:focus-visible {
+  a:focus-visible,
+  button:focus-visible {
     outline: 2px solid var(--color-hinata);
     outline-offset: 4px;
     border-radius: 1px;
@@ -81,4 +82,17 @@
   to {
     opacity: 1;
   }
+}
+
+/* Now-playing indicator — toggled by the mini-player via data-playing */
+.now-playing-dot {
+  display: none;
+}
+[data-playing="true"] .now-playing-dot {
+  display: block;
+}
+
+/* Keep page content clear of the fixed mini-player while it is open */
+body.has-player {
+  padding-bottom: 6rem;
 }

@@ -1,0 +1,255 @@
+<div
+    id="mini-player"
+    transition:persist="mini-player"
+    hidden
+    class="fixed inset-x-0 bottom-0 z-40 bg-kami/95 shadow-[0_-16px_40px_-12px_rgba(28,25,21,0.15)] backdrop-blur-sm"
+>
+    <div
+        class="mx-auto flex max-w-xl items-center gap-3 px-6 py-4 sm:gap-4 sm:px-8"
+    >
+        <audio id="player-audio" preload="none"></audio>
+        <button
+            id="player-prev"
+            type="button"
+            aria-label="Previous track"
+            class="shrink-0 cursor-pointer p-1 text-sumi transition-colors hover:text-hinata"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                class="size-4"
+                fill="currentColor"
+                aria-hidden="true"><path d="M7 6h2v12H7zM19 6v12l-9-6z"></path></svg
+            >
+        </button>
+        <button
+            id="player-toggle"
+            type="button"
+            aria-label="Pause"
+            class="shrink-0 cursor-pointer p-1 text-sumi transition-colors hover:text-hinata"
+        >
+            <svg
+                id="player-icon-play"
+                viewBox="0 0 24 24"
+                class="hidden size-5"
+                fill="currentColor"
+                aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg
+            >
+            <svg
+                id="player-icon-pause"
+                viewBox="0 0 24 24"
+                class="size-5"
+                fill="currentColor"
+                aria-hidden="true"
+                ><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"></path></svg
+            >
+        </button>
+        <button
+            id="player-next"
+            type="button"
+            aria-label="Next track"
+            class="shrink-0 cursor-pointer p-1 text-sumi transition-colors hover:text-hinata"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                class="size-4"
+                fill="currentColor"
+                aria-hidden="true"><path d="M15 6h2v12h-2zM5 6l9 6-9 6z"></path></svg
+            >
+        </button>
+        <div class="min-w-0 flex-1" aria-live="polite">
+            <p id="player-track" class="truncate text-sm"></p>
+            <p id="player-album" class="truncate text-xs text-hai"></p>
+        </div>
+        <a
+            id="player-spotify"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="shrink-0 text-xs text-hinata transition-colors hover:text-sumi"
+            >Spotify ↗</a
+        >
+        <button
+            id="player-close"
+            type="button"
+            aria-label="Close player"
+            class="shrink-0 cursor-pointer p-1 text-hai transition-colors hover:text-sumi"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                class="size-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg
+            >
+        </button>
+    </div>
+</div>
+
+<script>
+    interface Track {
+        name: string;
+        previewUrl: string;
+    }
+    interface AlbumPayload {
+        id: string;
+        title: string;
+        artist: string;
+        spotifyUrl: string;
+        tracks: Track[];
+    }
+
+    const root = document.getElementById("mini-player") as HTMLElement;
+    const audio = document.getElementById("player-audio") as HTMLAudioElement;
+    const toggleBtn = document.getElementById("player-toggle") as HTMLElement;
+    const iconPlay = document.getElementById("player-icon-play") as HTMLElement;
+    const iconPause = document.getElementById(
+        "player-icon-pause",
+    ) as HTMLElement;
+    const prevBtn = document.getElementById("player-prev") as HTMLElement;
+    const nextBtn = document.getElementById("player-next") as HTMLElement;
+    const closeBtn = document.getElementById("player-close") as HTMLElement;
+    const trackEl = document.getElementById("player-track") as HTMLElement;
+    const albumEl = document.getElementById("player-album") as HTMLElement;
+    const spotifyEl = document.getElementById(
+        "player-spotify",
+    ) as HTMLAnchorElement;
+
+    let album: AlbumPayload | null = null;
+    let index = 0;
+    let failures = 0;
+
+    /*
+     * The player element survives ClientRouter navigations via
+     * transition:persist, so every reference above stays live. The body
+     * is swapped on each navigation, though — anything touching body or
+     * grid covers must re-sync on astro:page-load.
+     */
+
+    function syncBodyPadding() {
+        document.body.classList.toggle("has-player", !root.hidden);
+    }
+
+    function syncIcons() {
+        iconPlay.classList.toggle("hidden", !audio.paused);
+        iconPause.classList.toggle("hidden", audio.paused);
+        toggleBtn.setAttribute("aria-label", audio.paused ? "Play" : "Pause");
+    }
+
+    function syncDots() {
+        document
+            .querySelectorAll<HTMLElement>("[data-album-id]")
+            .forEach((el) => {
+                el.dataset.playing =
+                    album && !audio.paused && el.dataset.albumId === album.id
+                        ? "true"
+                        : "false";
+            });
+    }
+
+    function loadTrack(i: number, autoplay = true) {
+        if (!album) return;
+        index = i;
+        const track = album.tracks[i];
+        trackEl.textContent = track.name;
+        albumEl.textContent = `${album.artist} — ${album.title}`;
+        audio.src = track.previewUrl;
+        if (autoplay) audio.play().catch(() => {});
+    }
+
+    function openAlbum(payload: AlbumPayload) {
+        album = payload;
+        failures = 0;
+        spotifyEl.href = payload.spotifyUrl;
+        root.hidden = false;
+        syncBodyPadding();
+        loadTrack(0);
+    }
+
+    function closePlayer() {
+        audio.pause();
+        audio.removeAttribute("src");
+        album = null;
+        root.hidden = true;
+        syncBodyPadding();
+        syncDots();
+    }
+
+    // Covers are re-rendered on every navigation, so listen once at the
+    // document level instead of wiring each button.
+    document.addEventListener("click", (event) => {
+        if (!(event.target instanceof Element)) return;
+        const btn = event.target.closest("button[data-album]");
+        if (!btn) return;
+        const payload = JSON.parse(
+            btn.getAttribute("data-album")!,
+        ) as AlbumPayload;
+        if (album && payload.id === album.id) {
+            // Tapping the playing album toggles rather than restarting.
+            audio.paused ? audio.play().catch(() => {}) : audio.pause();
+            return;
+        }
+        openAlbum(payload);
+    });
+
+    toggleBtn.addEventListener("click", () => {
+        if (!album) return;
+        audio.paused ? audio.play().catch(() => {}) : audio.pause();
+    });
+
+    nextBtn.addEventListener("click", () => {
+        if (!album) return;
+        if (index < album.tracks.length - 1) loadTrack(index + 1);
+    });
+
+    prevBtn.addEventListener("click", () => {
+        if (!album) return;
+        if (audio.currentTime > 3 || index === 0) {
+            audio.currentTime = 0;
+            audio.play().catch(() => {});
+        } else {
+            loadTrack(index - 1);
+        }
+    });
+
+    closeBtn.addEventListener("click", closePlayer);
+
+    audio.addEventListener("play", () => {
+        syncIcons();
+        syncDots();
+    });
+    audio.addEventListener("pause", () => {
+        syncIcons();
+        syncDots();
+    });
+    audio.addEventListener("playing", () => {
+        failures = 0;
+    });
+    audio.addEventListener("ended", () => {
+        if (!album) return;
+        if (index < album.tracks.length - 1) {
+            loadTrack(index + 1);
+        } else {
+            // Album finished — rest quietly at the top, no autoplay.
+            loadTrack(0, false);
+        }
+    });
+    audio.addEventListener("error", () => {
+        if (!album || !audio.getAttribute("src")) return;
+        console.warn(
+            `Preview unavailable, skipping: ${album.tracks[index]?.name}`,
+        );
+        failures += 1;
+        if (failures >= album.tracks.length) {
+            closePlayer();
+            return;
+        }
+        if (index < album.tracks.length - 1) loadTrack(index + 1);
+        else loadTrack(0, false);
+    });
+
+    document.addEventListener("astro:page-load", () => {
+        syncBodyPadding();
+        syncDots();
+    });
+</script>
