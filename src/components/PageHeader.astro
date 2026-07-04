@@ -1,0 +1,33 @@
+---
+interface Props {
+    kanji: string;
+    title: string;
+}
+
+const { kanji, title } = Astro.props;
+const hasSubtitle = Astro.slots.has("default");
+---
+
+<header class="relative mt-16 sm:mt-28">
+    <span
+        class="tategaki absolute -left-14 top-1 hidden select-none font-display text-sm text-hai/70 lg:block"
+        aria-hidden="true">{kanji}</span
+    >
+    <a
+        href="/"
+        class="text-xs font-medium tracking-[0.35em] text-hai uppercase transition-colors hover:text-sumi"
+        >Isaac Kwok</a
+    >
+    <h1
+        class="mt-6 font-display text-4xl font-medium tracking-tight sm:text-5xl"
+    >
+        {title}
+    </h1>
+    {
+        hasSubtitle && (
+            <p class="mt-8 leading-loose text-hai">
+                <slot />
+            </p>
+        )
+    }
+</header>

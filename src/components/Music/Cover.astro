@@ -1,0 +1,104 @@
+---
+import { Image } from "astro:assets";
+
+interface Track {
+    name: string;
+    previewUrl: string;
+}
+
+interface Props {
+    album: {
+        artist: string;
+        title: string;
+        itunesId: number;
+        spotifyUrl: string;
+        artworkUrl: string;
+        tracks: Track[];
+    };
+    eager?: boolean;
+}
+
+const { album, eager = false } = Astro.props;
+const playable = album.tracks.length > 0;
+const payload = JSON.stringify({
+    id: String(album.itunesId),
+    title: album.title,
+    artist: album.artist,
+    spotifyUrl: album.spotifyUrl,
+    tracks: album.tracks,
+});
+---
+
+<div class="group relative" data-album-id={String(album.itunesId)}>
+    {
+        playable ? (
+            <button
+                type="button"
+                data-album={payload}
+                aria-label={`Play ${album.title} by ${album.artist}`}
+                class="block w-full cursor-pointer"
+            >
+                <Image
+                    src={album.artworkUrl}
+                    alt=""
+                    width={600}
+                    height={600}
+                    widths={[200, 400]}
+                    sizes="(min-width: 640px) 163px, 45vw"
+                    format="webp"
+                    quality={80}
+                    loading={eager ? "eager" : "lazy"}
+                    class="w-full"
+                />
+            </button>
+        ) : (
+            <a
+                href={album.spotifyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open ${album.title} by ${album.artist} on Spotify`}
+                class="block w-full"
+            >
+                <Image
+                    src={album.artworkUrl}
+                    alt=""
+                    width={600}
+                    height={600}
+                    widths={[200, 400]}
+                    sizes="(min-width: 640px) 163px, 45vw"
+                    format="webp"
+                    quality={80}
+                    loading={eager ? "eager" : "lazy"}
+                    class="w-full"
+                />
+            </a>
+        )
+    }
+    <span
+        class="now-playing-dot absolute top-2 right-2 hidden size-2 rounded-full bg-hinata motion-safe:animate-pulse"
+        aria-hidden="true"></span>
+    <div
+        class="pointer-events-none absolute inset-x-0 bottom-0 hidden flex-col gap-1 bg-gradient-to-t from-kami via-kami/80 to-transparent p-3 pt-10 opacity-0 transition-opacity duration-300 group-focus-within:opacity-100 group-hover:opacity-100 [@media(hover:hover)]:flex"
+    >
+        <p class="truncate font-display text-sm">{album.title}</p>
+        <p class="truncate text-xs text-hai">{album.artist}</p>
+        <a
+            href={album.spotifyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="pointer-events-auto text-xs text-hinata transition-colors hover:text-sumi"
+            >Spotify ↗</a
+        >
+    </div>
+    <div class="mt-2 [@media(hover:hover)]:hidden">
+        <p class="truncate text-xs">{album.title}</p>
+        <p class="truncate text-xs text-hai">{album.artist}</p>
+        <a
+            href={album.spotifyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-xs text-hinata"
+            >Spotify ↗</a
+        >
+    </div>
+</div>

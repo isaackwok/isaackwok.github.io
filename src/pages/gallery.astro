@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
 import Nav from "../components/Nav.astro";
+import PageHeader from "../components/PageHeader.astro";
 
 const photos = (await getCollection("gallery")).sort(
     (a, b) => a.data.order - b.data.order,
@@ -16,22 +17,7 @@ const photos = (await getCollection("gallery")).sort(
     <main class="mx-auto max-w-xl px-6 pt-10 pb-24 sm:px-8 sm:pt-14 sm:pb-32">
         <Nav />
 
-        <header class="relative mt-16 sm:mt-28">
-            <span
-                class="tategaki absolute -left-14 top-1 hidden select-none font-display text-sm text-hai/70 lg:block"
-                aria-hidden="true">攝影</span
-            >
-            <a
-                href="/"
-                class="text-xs font-medium tracking-[0.35em] text-hai uppercase transition-colors hover:text-sumi"
-                >Isaac Kwok</a
-            >
-            <h1
-                class="mt-6 font-display text-4xl font-medium tracking-tight sm:text-5xl"
-            >
-                Gallery
-            </h1>
-        </header>
+        <PageHeader kanji="攝影" title="Gallery" />
 
         <div class="mt-20 sm:mt-24">
             {
