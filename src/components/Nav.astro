@@ -1,0 +1,34 @@
+---
+const links = [
+    { href: "/articles", kanji: "文章", label: "Articles" },
+    { href: "/gallery", kanji: "攝影", label: "Gallery" },
+    { href: "/music", kanji: "音樂", label: "Music" },
+];
+
+const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
+---
+
+<nav aria-label="Site" class="flex flex-wrap gap-x-8 gap-y-3 sm:gap-x-10">
+    {
+        links.map(({ href, kanji, label }) => (
+            <a
+                href={href}
+                aria-current={currentPath === href ? "page" : undefined}
+                class:list={[
+                    "group flex flex-col gap-y-1.5 text-xs font-medium tracking-[0.35em] uppercase transition-colors sm:block",
+                    currentPath === href
+                        ? "text-sumi"
+                        : "text-hai hover:text-sumi",
+                ]}
+            >
+                <span
+                    class="font-display text-sm normal-case tracking-[0.3em] transition-colors group-hover:text-hinata sm:mr-3"
+                    aria-hidden="true"
+                >
+                    {kanji}
+                </span>
+                {label}
+            </a>
+        ))
+    }
+</nav>
