@@ -1,5 +1,5 @@
 ---
-import { ClientRouter } from "astro:transitions";
+import { ClientRouter, fade } from "astro:transitions";
 
 import "../styles/global.css";
 
@@ -15,7 +15,7 @@ const {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" transition:animate={fade({ duration: "0.4s" })}>
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
