@@ -11,6 +11,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "test": "vitest run",
+    "new:article": "node scripts/new-article.mjs",
     "astro": "astro"
   },
   "dependencies": {
