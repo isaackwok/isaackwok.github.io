@@ -6,11 +6,19 @@ import "../styles/global.css";
 interface Props {
     title?: string;
     description?: string;
+    lang?: string;
+    ogType?: "website" | "article";
+    ogImage?: string;
+    publishedTime?: Date;
 }
 
 const {
     title = "Isaac Kwok — Software Engineer",
     description = "Personal site of Isaac Kwok, a software engineer crafting warm, thoughtful experiences where design meets engineering.",
+    lang = "en",
+    ogType = "website",
+    ogImage,
+    publishedTime,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -50,7 +58,7 @@ const pageTransition = { forwards: pageFade, backwards: pageFade };
 ---
 
 <!doctype html>
-<html lang="en" transition:animate={pageTransition}>
+<html lang={lang} transition:animate={pageTransition}>
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -61,15 +69,25 @@ const pageTransition = { forwards: pageFade, backwards: pageFade };
         <link rel="canonical" href={canonicalURL} />
         <link rel="sitemap" href="/sitemap-index.xml" />
         <title>{title}</title>
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content={ogType} />
         <meta property="og:url" content={canonicalURL} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:site_name" content="Isaac Kwok" />
         <meta property="og:locale" content="en" />
-        <meta name="twitter:card" content="summary" />
+        {ogImage && <meta property="og:image" content={ogImage} />}
+        {
+            publishedTime && ogType === "article" && (
+                <meta
+                    property="article:published_time"
+                    content={publishedTime.toISOString()}
+                />
+            )
+        }
+        <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
+        {ogImage && <meta name="twitter:image" content={ogImage} />}
         <script
             is:inline
             type="application/ld+json"
