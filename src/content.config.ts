@@ -1,7 +1,8 @@
 import { defineCollection } from "astro:content";
-import { file } from "astro/loaders";
+import { file, glob } from "astro/loaders";
 import { z } from "astro/zod";
 import { parse } from "yaml";
+import { articleSchema } from "./lib/article-schema";
 
 const gallery = defineCollection({
     loader: file("src/data/gallery.yaml", {
@@ -23,4 +24,9 @@ const gallery = defineCollection({
         }),
 });
 
-export const collections = { gallery };
+const articles = defineCollection({
+    loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/articles" }),
+    schema: ({ image }) => articleSchema(image),
+});
+
+export const collections = { gallery, articles };
