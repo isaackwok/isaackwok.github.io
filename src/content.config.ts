@@ -1,8 +1,9 @@
 import { defineCollection } from "astro:content";
-import { file } from "astro/loaders";
+import { file, glob } from "astro/loaders";
 import { z } from "astro/zod";
 import { parse } from "yaml";
 import { readFile } from "node:fs/promises";
+import { articleSchema } from "./lib/article-schema";
 import { lookupAlbum } from "./lib/itunes";
 import { parseGallery } from "./lib/gallery";
 
@@ -15,6 +16,11 @@ const gallery = defineCollection({
             caption: z.string().min(1),
             order: z.number(),
         }),
+});
+
+const articles = defineCollection({
+    loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/articles" }),
+    schema: ({ image }) => articleSchema(image),
 });
 
 const music = defineCollection({
@@ -60,4 +66,4 @@ const music = defineCollection({
     }),
 });
 
-export const collections = { gallery, music };
+export const collections = { gallery, articles, music };

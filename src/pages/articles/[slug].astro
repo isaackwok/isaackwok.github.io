@@ -1,0 +1,83 @@
+---
+import { Image } from "astro:assets";
+import { getCollection, render } from "astro:content";
+import PageHeader from "../../components/PageHeader.astro";
+import PageShell from "../../components/PageShell.astro";
+import { formatArticleDate, isPublished } from "../../lib/articles";
+
+export async function getStaticPaths() {
+    const articles = await getCollection("articles", (entry) =>
+        isPublished(entry, import.meta.env.PROD),
+    );
+    return articles.map((entry) => ({
+        params: { slug: entry.id },
+        props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content, remarkPluginFrontmatter } = await render(entry);
+const { title, description, date, tags, lang, image, imageAlt } = entry.data;
+const minutesRead = remarkPluginFrontmatter.minutesRead as number;
+const ogImage = image
+    ? new URL(image.src, Astro.site).toString()
+    : undefined;
+---
+
+<PageShell
+    title={`${title} — Isaac Kwok`}
+    description={description}
+    lang={lang}
+    ogType="article"
+    ogImage={ogImage}
+    publishedTime={date}
+>
+    <PageHeader
+        kanji="文章"
+        eyebrowHref="/articles"
+        eyebrowLabel="Articles"
+        title={title}
+    />
+
+    <p class="mt-6 text-sm text-hai">
+        <time datetime={date.toISOString().split("T")[0]}>
+            {formatArticleDate(date)}
+        </time>
+        {" "}
+        <span aria-hidden="true">·</span>
+        {" "}
+        {minutesRead} min
+        {
+            tags.map((tag) => (
+                <>
+                    {" "}
+                    <span aria-hidden="true">·</span>
+                    {" "}
+                    {tag}
+                </>
+            ))
+        }
+    </p>
+
+    {
+        image && imageAlt && (
+            <div class="-mx-6 mt-16 sm:mx-0 sm:mt-20">
+                <Image
+                    src={image}
+                    alt={imageAlt}
+                    widths={[640, 1024, 1536]}
+                    sizes="(min-width: 640px) 512px, 100vw"
+                    format="webp"
+                    quality={80}
+                    loading="eager"
+                    fetchpriority="high"
+                    class="w-full"
+                />
+            </div>
+        )
+    }
+
+    <article class="prose mt-16 sm:mt-20" lang={lang}>
+        <Content />
+    </article>
+</PageShell>

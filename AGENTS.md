@@ -17,7 +17,8 @@
 - `Layout.astro` owns the entire `<head>`: canonical URL, Open Graph/Twitter meta (including the `public/og.png` social card), JSON-LD Person schema, fonts. Pages pass `title` / `description` props — never add meta tags in a page.
 - Every page renders inside `PageShell.astro` (wraps `Layout` and provides the centered `<main>` column, `Nav`, and the © footer with a build-time year) with a `PageHeader.astro` on top for subpages. Don't hand-roll the main/nav/footer frame in a page.
 - Page navigation fades via Astro's `<ClientRouter />`: old page out (0.3s), blank kami hold (0.15s), new page in (0.3s). Timing config in `Layout.astro`, keyframes in `global.css`.
-- `/articles` is an intentional stub rendered with `Placeholder.astro`.
+- Astro's default `compressHTML` strips whitespace between elements in rendered output — where a rendered space is load-bearing in a `.astro` template, write an explicit `{" "}` expression (see the article byline paragraphs). Verify spacing against rendered HTML, not the template source.
+- `/articles` is a Markdown/MDX content collection. Add an article: `pnpm new:article "Article title" [slug]` scaffolds a dated draft with every frontmatter field (or create `src/content/articles/<slug>.md` by hand). Fields: `title`, `description`, `date` required; `tags`, `lang` (`en` or `zh-Hant`), `draft: true`, `image` + `imageAlt` optional. The scaffold defaults `lang: zh-Hant` — set `en` for English pieces, or they get the CJK prose spacing and `og:locale zh_TW`. Keep files flat — no subfolders. Drafts render in dev but are excluded from production builds. Reading time is computed at build time by `src/lib/remark-reading-time.mjs`. Hero images live in `src/assets/articles/`, referenced relatively (`../../assets/articles/<file>`).
 - `/music` is an album grid with preview playback. Album data lives in `src/data/music.yaml`; a content-collection loader resolves artwork + ~30–90s preview MP3s from the iTunes Lookup API at build time (no keys; visitors never call Apple). The mini-player in `Layout.astro` is `transition:persist`ed so audio survives page navigation. Add an album: append artist/title/`itunesId`/`country`/`spotifyUrl` to `music.yaml` (find the `itunesId` via `https://itunes.apple.com/search?term=<album>&entity=album&country=<storefront>`); restart the dev server to see it — the loader only runs at startup.
 - `/gallery` is a curated photo flow driven by a content collection. Add a photo: drop a JPEG (pre-resized to ~2000px longest edge) into `src/assets/gallery/` and add three lines to `src/data/gallery.yaml` (`image`, `alt`, `caption`); top-to-bottom order is display order.
 
@@ -33,8 +34,8 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 ## Testing
 
-- `pnpm test` runs the Vitest unit tests (`pnpm test:watch` for watch mode). Tests are colocated: `src/lib/*.test.ts` cover the iTunes lookup and gallery parsing; `src/data/data.test.ts` sanity-checks `gallery.yaml` (images exist, alt/caption present) and `music.yaml` (valid ids, storefronts, Spotify URLs).
-- The gallery loader's parser lives in `src/lib/gallery.ts` (`parseGallery`) so it stays unit-testable — don't inline it back into `content.config.ts`.
+- `pnpm test` runs the Vitest unit tests (`pnpm test:watch` for watch mode; config in `vitest.config.ts` via Astro's `getViteConfig`, include pattern `src/**/*.test.ts`). Tests are colocated: `src/lib/*.test.ts` cover the iTunes lookup, gallery parsing, and the articles logic (draft filter, date formatting, frontmatter schema, reading time, new-article scaffold); `src/data/data.test.ts` sanity-checks `gallery.yaml` (images exist, alt/caption present) and `music.yaml` (valid ids, storefronts, Spotify URLs).
+- The gallery loader's parser lives in `src/lib/gallery.ts` (`parseGallery`) so it stays unit-testable — don't inline it back into `content.config.ts`. The articles logic follows the same rule: pure helpers in `src/lib/`, pages stay thin.
 
 ## Deployment
 

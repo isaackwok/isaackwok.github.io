@@ -1,0 +1,74 @@
+---
+import { getCollection, render } from "astro:content";
+import PageHeader from "../../components/PageHeader.astro";
+import PageShell from "../../components/PageShell.astro";
+import { formatArticleDate, isPublished } from "../../lib/articles";
+
+const published = await getCollection("articles", (entry) =>
+    isPublished(entry, import.meta.env.PROD),
+);
+
+const articles = (
+    await Promise.all(
+        published.map(async (entry) => {
+            const { remarkPluginFrontmatter } = await render(entry);
+            return {
+                entry,
+                minutesRead: remarkPluginFrontmatter.minutesRead as number,
+            };
+        }),
+    )
+).sort((a, b) => b.entry.data.date.valueOf() - a.entry.data.date.valueOf());
+---
+
+<PageShell
+    title="Articles — Isaac Kwok"
+    description="Articles by Isaac Kwok — essays and notes on software, design, and craft."
+>
+    <PageHeader kanji="文章" title="Articles" />
+
+    <div class="mt-20 sm:mt-24">
+        {
+            articles.length === 0 ? (
+                <p class="leading-loose text-hai">Nothing here yet.</p>
+            ) : (
+                <ul>
+                    {articles.map(({ entry, minutesRead }) => (
+                        <li
+                            class="mt-14 first:mt-0 sm:mt-16"
+                            lang={entry.data.lang}
+                        >
+                            <time
+                                class="text-sm text-hai"
+                                datetime={
+                                    entry.data.date.toISOString().split("T")[0]
+                                }
+                            >
+                                {formatArticleDate(entry.data.date)}
+                            </time>
+                            <h2 class="mt-2 font-display text-2xl font-medium tracking-tight">
+                                <a
+                                    href={`/articles/${entry.id}`}
+                                    class="transition-colors hover:text-hinata"
+                                >
+                                    {entry.data.title}
+                                </a>
+                            </h2>
+                            <p class="mt-2 text-sm text-hai">
+                                {minutesRead} min
+                                {entry.data.tags.map((tag) => (
+                                    <>
+                                        {" "}
+                                        <span aria-hidden="true">·</span>
+                                        {" "}
+                                        {tag}
+                                    </>
+                                ))}
+                            </p>
+                        </li>
+                    ))}
+                </ul>
+            )
+        }
+    </div>
+</PageShell>

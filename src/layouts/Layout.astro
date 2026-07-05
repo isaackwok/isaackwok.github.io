@@ -7,15 +7,28 @@ import "../styles/global.css";
 interface Props {
     title?: string;
     description?: string;
+    lang?: string;
+    ogType?: "website" | "article";
+    ogImage?: string;
+    publishedTime?: Date;
 }
 
 const {
     title = "Isaac Kwok — Software Engineer",
     description = "Personal site of Isaac Kwok, a software engineer crafting warm, thoughtful experiences where design meets engineering.",
+    lang = "en",
+    ogType = "website",
+    ogImage,
+    publishedTime,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL("/og.png", Astro.site);
+const ogLocale = lang === "zh-Hant" ? "zh_TW" : "en_US";
+
+// Article pages pass their hero as ogImage; everything else gets the
+// site-wide social card, whose fixed 1200x630 dimensions we can vouch for.
+const socialImage = ogImage ?? new URL("/og.png", Astro.site).toString();
+const isDefaultSocialImage = !ogImage;
 
 const personSchema = {
     "@context": "https://schema.org",
@@ -55,7 +68,7 @@ const pageTransition = { forwards: pageFade, backwards: pageFade };
 ---
 
 <!doctype html>
-<html lang="en" transition:animate={pageTransition}>
+<html lang={lang} transition:animate={pageTransition}>
     <head>
         <meta charset="utf-8" />
         <meta
@@ -70,23 +83,35 @@ const pageTransition = { forwards: pageFade, backwards: pageFade };
         <link rel="canonical" href={canonicalURL} />
         <link rel="sitemap" href="/sitemap-index.xml" />
         <title>{title}</title>
-        <meta property="og:type" content="website" />
+        <meta property="og:type" content={ogType} />
         <meta property="og:url" content={canonicalURL} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:site_name" content="Isaac Kwok" />
-        <meta property="og:locale" content="en_US" />
-        <meta property="og:image" content={ogImage} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta
-            property="og:image:alt"
-            content="Isaac Kwok — Software Engineer"
-        />
+        <meta property="og:locale" content={ogLocale} />
+        <meta property="og:image" content={socialImage} />
+        {isDefaultSocialImage && <meta property="og:image:width" content="1200" />}
+        {isDefaultSocialImage && <meta property="og:image:height" content="630" />}
+        {
+            isDefaultSocialImage && (
+                <meta
+                    property="og:image:alt"
+                    content="Isaac Kwok — Software Engineer"
+                />
+            )
+        }
+        {
+            publishedTime && ogType === "article" && (
+                <meta
+                    property="article:published_time"
+                    content={publishedTime.toISOString()}
+                />
+            )
+        }
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={ogImage} />
+        <meta name="twitter:image" content={socialImage} />
         <script
             is:inline
             type="application/ld+json"

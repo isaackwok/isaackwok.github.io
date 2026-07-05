@@ -2,9 +2,16 @@
 interface Props {
     kanji: string;
     title: string;
+    eyebrowHref?: string;
+    eyebrowLabel?: string;
 }
 
-const { kanji, title } = Astro.props;
+const {
+    kanji,
+    title,
+    eyebrowHref = "/",
+    eyebrowLabel = "Isaac Kwok",
+} = Astro.props;
 const hasSubtitle = Astro.slots.has("default");
 ---
 
@@ -14,9 +21,9 @@ const hasSubtitle = Astro.slots.has("default");
         aria-hidden="true">{kanji}</span
     >
     <a
-        href="/"
+        href={eyebrowHref}
         class="text-xs font-medium tracking-[0.35em] text-hai uppercase transition-colors hover:text-sumi"
-        >Isaac Kwok</a
+        >{eyebrowLabel}</a
     >
     <h1
         class="mt-6 font-display text-4xl font-medium tracking-tight sm:text-5xl"
