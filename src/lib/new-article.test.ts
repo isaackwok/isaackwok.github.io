@@ -31,6 +31,17 @@ describe("articleTemplate", () => {
         expect(md).toContain("draft: true");
     });
 
+    it("includes every optional field — valid defaults or commented out", () => {
+        const md = articleTemplate(
+            "Quiet software",
+            new Date("2026-07-05T12:00:00"),
+        );
+        expect(md).toContain("tags: []");
+        expect(md).toContain("lang: en");
+        expect(md).toContain("# image: ../../assets/articles/");
+        expect(md).toContain("# imageAlt:");
+    });
+
     it("escapes double quotes in the title", () => {
         const md = articleTemplate(
             'The "quiet" web',
