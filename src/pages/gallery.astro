@@ -37,7 +37,7 @@ const photos = (await getCollection("gallery")).sort(
                                     : "(min-width: 640px) 512px, calc(100vw - 48px)"
                             }
                             format="webp"
-                            quality={80}
+                            quality={100}
                             loading={index === 0 ? "eager" : "lazy"}
                             fetchpriority={index === 0 ? "high" : "auto"}
                             class="w-full"
