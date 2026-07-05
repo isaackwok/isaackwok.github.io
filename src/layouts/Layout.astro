@@ -22,6 +22,7 @@ const {
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogLocale = lang === "zh-Hant" ? "zh_TW" : "en";
 
 const personSchema = {
     "@context": "https://schema.org",
@@ -74,7 +75,7 @@ const pageTransition = { forwards: pageFade, backwards: pageFade };
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:site_name" content="Isaac Kwok" />
-        <meta property="og:locale" content="en" />
+        <meta property="og:locale" content={ogLocale} />
         {ogImage && <meta property="og:image" content={ogImage} />}
         {
             publishedTime && ogType === "article" && (

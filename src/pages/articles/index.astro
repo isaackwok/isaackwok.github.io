@@ -52,7 +52,10 @@ const articles = (
                 ) : (
                     <ul>
                         {articles.map(({ entry, minutesRead }) => (
-                            <li class="mt-14 first:mt-0 sm:mt-16">
+                            <li
+                                class="mt-14 first:mt-0 sm:mt-16"
+                                lang={entry.data.lang}
+                            >
                                 <time
                                     class="text-sm text-hai"
                                     datetime={
