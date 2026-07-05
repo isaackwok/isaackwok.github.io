@@ -17,6 +17,11 @@ export default defineConfig({
     shikiConfig: { theme: 'github-light' },
     processor: unified({ remarkPlugins: [remarkReadingTime] }),
   },
+  image: {
+    // Album artwork comes from Apple's CDN and is optimized into
+    // self-hosted assets at build time.
+    remotePatterns: [{ protocol: 'https', hostname: '**.mzstatic.com' }],
+  },
   vite: {
     plugins: [tailwindcss()]
   }

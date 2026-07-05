@@ -1,10 +1,27 @@
 ---
-import Placeholder from "../components/Placeholder.astro";
+import { getCollection } from "astro:content";
+import PageShell from "../components/PageShell.astro";
+import PageHeader from "../components/PageHeader.astro";
+import * as Music from "../components/Music";
+
+const albums = (await getCollection("music")).sort(
+    (a, b) => a.data.order - b.data.order,
+);
 ---
 
-<Placeholder
-    title="Music"
-    kanji="音樂"
-    description="Music by Isaac Kwok — sounds and songs."
-    blurb="sounds and songs will live here soon."
-/>
+<PageShell
+    title="Music — Isaac Kwok"
+    description="Favorite albums of Isaac Kwok — press play and listen while you browse."
+>
+    <PageHeader kanji="音樂" title="Music">
+        Albums I keep returning to. Press one to listen while you browse.
+    </PageHeader>
+
+    <Music.Grid>
+        {
+            albums.map((album, index) => (
+                <Music.Cover album={album.data} eager={index < 6} />
+            ))
+        }
+    </Music.Grid>
+</PageShell>
