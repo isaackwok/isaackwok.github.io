@@ -1,8 +1,8 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection, render } from "astro:content";
-import Nav from "../../components/Nav.astro";
-import Layout from "../../layouts/Layout.astro";
+import PageHeader from "../../components/PageHeader.astro";
+import PageShell from "../../components/PageShell.astro";
 import { formatArticleDate, isPublished } from "../../lib/articles";
 
 export async function getStaticPaths() {
@@ -24,7 +24,7 @@ const ogImage = image
     : undefined;
 ---
 
-<Layout
+<PageShell
     title={`${title} — Isaac Kwok`}
     description={description}
     lang={lang}
@@ -32,69 +32,50 @@ const ogImage = image
     ogImage={ogImage}
     publishedTime={date}
 >
-    <main class="mx-auto max-w-xl px-6 pt-10 pb-24 sm:px-8 sm:pt-14 sm:pb-32">
-        <Nav />
+    <PageHeader
+        kanji="文章"
+        eyebrowHref="/articles"
+        eyebrowLabel="Articles"
+        title={title}
+    />
 
-        <header class="relative mt-16 sm:mt-28">
-            <span
-                class="tategaki absolute -left-14 top-1 hidden select-none font-display text-sm text-hai/70 lg:block"
-                aria-hidden="true">文章</span
-            >
-            <a
-                href="/articles"
-                class="text-xs font-medium tracking-[0.35em] text-hai uppercase transition-colors hover:text-sumi"
-                >Articles</a
-            >
-            <h1
-                class="mt-6 font-display text-4xl font-medium tracking-tight sm:text-5xl"
-            >
-                {title}
-            </h1>
-            <p class="mt-6 text-sm text-hai">
-                <time datetime={date.toISOString().split("T")[0]}>
-                    {formatArticleDate(date)}
-                </time>
-                {" "}
-                <span aria-hidden="true">·</span>
-                {" "}
-                {minutesRead} min
-                {
-                    tags.map((tag) => (
-                        <>
-                            {" "}
-                            <span aria-hidden="true">·</span>
-                            {" "}
-                            {tag}
-                        </>
-                    ))
-                }
-            </p>
-        </header>
-
+    <p class="mt-6 text-sm text-hai">
+        <time datetime={date.toISOString().split("T")[0]}>
+            {formatArticleDate(date)}
+        </time>
+        {" "}
+        <span aria-hidden="true">·</span>
+        {" "}
+        {minutesRead} min
         {
-            image && imageAlt && (
-                <Image
-                    src={image}
-                    alt={imageAlt}
-                    widths={[512, 1024]}
-                    sizes="(min-width: 640px) 512px, calc(100vw - 48px)"
-                    format="webp"
-                    quality={80}
-                    loading="eager"
-                    fetchpriority="high"
-                    class="mt-16 w-full sm:mt-20"
-                />
-            )
+            tags.map((tag) => (
+                <>
+                    {" "}
+                    <span aria-hidden="true">·</span>
+                    {" "}
+                    {tag}
+                </>
+            ))
         }
+    </p>
 
-        <article class="prose mt-16 sm:mt-20" lang={lang}>
-            <Content />
-        </article>
+    {
+        image && imageAlt && (
+            <Image
+                src={image}
+                alt={imageAlt}
+                widths={[512, 1024]}
+                sizes="(min-width: 640px) 512px, calc(100vw - 48px)"
+                format="webp"
+                quality={80}
+                loading="eager"
+                fetchpriority="high"
+                class="mt-16 w-full sm:mt-20"
+            />
+        )
+    }
 
-        <footer
-            class="mt-32 flex items-baseline justify-between text-sm text-hai sm:mt-40"
-        >
-            <p>&copy; 2026 Isaac Kwok</p>
-        </footer>
-    </main>
-</Layout>
+    <article class="prose mt-16 sm:mt-20" lang={lang}>
+        <Content />
+    </article>
+</PageShell>

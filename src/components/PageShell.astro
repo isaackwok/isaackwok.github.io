@@ -5,13 +5,25 @@ import Nav from "./Nav.astro";
 interface Props {
     title?: string;
     description?: string;
+    lang?: string;
+    ogType?: "website" | "article";
+    ogImage?: string;
+    publishedTime?: Date;
 }
 
-const { title, description } = Astro.props;
+const { title, description, lang, ogType, ogImage, publishedTime } =
+    Astro.props;
 const year = new Date().getFullYear();
 ---
 
-<Layout title={title} description={description}>
+<Layout
+    title={title}
+    description={description}
+    lang={lang}
+    ogType={ogType}
+    ogImage={ogImage}
+    publishedTime={publishedTime}
+>
     <main class="mx-auto max-w-xl px-6 pt-10 pb-24 sm:px-8 sm:pt-14 sm:pb-32">
         <Nav />
 
