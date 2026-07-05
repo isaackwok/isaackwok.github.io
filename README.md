@@ -1,46 +1,28 @@
-# Astro Starter Kit: Basics
+# isaackwok.com
 
-```sh
-pnpm create astro@latest -- --template basics
-```
+Personal site of Isaac Kwok — built with [Astro](https://astro.build) 7, Tailwind CSS 4, and pnpm. Japanese-minimalist design: plain kami-white background, warm ink text, spacing over borders.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Commands
 
-## 🚀 Project Structure
+Node >= 22 is required (`.nvmrc`: 24.14.1) — run `nvm use` first.
 
-Inside of your Astro project, you'll see the following folders and files:
+| Command                           | Action                                                    |
+| :-------------------------------- | :-------------------------------------------------------- |
+| `pnpm install`                    | Install dependencies                                      |
+| `pnpm dev`                        | Start the dev server at `localhost:4321`                  |
+| `pnpm astro dev --background`     | Dev server in the background (`stop` / `status` / `logs`) |
+| `pnpm test`                       | Run unit tests (Vitest)                                   |
+| `pnpm new:article "Title" [slug]` | Scaffold a draft article with full frontmatter            |
+| `pnpm build`                      | Build the production site to `./dist/`                    |
+| `pnpm preview`                    | Preview the production build                              |
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+## Content
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+- **Articles** (`/articles`) — Markdown/MDX files in `src/content/articles/`. Scaffold one with `pnpm new:article`; drafts (`draft: true`) render in dev but 404 in production. Set `draft: false` to publish. Reading time is computed at build; hero images live in `src/assets/articles/`.
+- **Gallery** (`/gallery`) — drop a JPEG (~2000px longest edge) into `src/assets/gallery/` and add an `image` / `alt` / `caption` entry to `src/data/gallery.yaml`; list order is display order.
 
-## 🧞 Commands
+## Deployment
 
-All commands are run from the root of the project, from a terminal:
+Every push to `main` deploys to GitHub Pages via `.github/workflows/deploy.yml` — no manual build step. Custom domain: [isaackwok.com](https://isaackwok.com).
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Project conventions (design tokens, layout rules, workflows) live in [AGENTS.md](AGENTS.md), which `CLAUDE.md` symlinks to.
