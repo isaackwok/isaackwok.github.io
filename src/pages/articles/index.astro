@@ -1,0 +1,103 @@
+---
+import { getCollection, render } from "astro:content";
+import Nav from "../../components/Nav.astro";
+import Layout from "../../layouts/Layout.astro";
+import { formatArticleDate, isPublished } from "../../lib/articles";
+
+const published = await getCollection("articles", (entry) =>
+    isPublished(entry, import.meta.env.PROD),
+);
+
+const articles = (
+    await Promise.all(
+        published.map(async (entry) => {
+            const { remarkPluginFrontmatter } = await render(entry);
+            return {
+                entry,
+                minutesRead: remarkPluginFrontmatter.minutesRead as number,
+            };
+        }),
+    )
+).sort((a, b) => b.entry.data.date.valueOf() - a.entry.data.date.valueOf());
+---
+
+<Layout
+    title="Articles — Isaac Kwok"
+    description="Articles by Isaac Kwok — essays and notes on software, design, and craft."
+>
+    <main class="mx-auto max-w-xl px-6 pt-10 pb-24 sm:px-8 sm:pt-14 sm:pb-32">
+        <Nav />
+
+        <header class="relative mt-16 sm:mt-28">
+            <span
+                class="tategaki absolute -left-14 top-1 hidden select-none font-display text-sm text-hai/70 lg:block"
+                aria-hidden="true">文章</span
+            >
+            <a
+                href="/"
+                class="text-xs font-medium tracking-[0.35em] text-hai uppercase transition-colors hover:text-sumi"
+                >Isaac Kwok</a
+            >
+            <h1
+                class="mt-6 font-display text-4xl font-medium tracking-tight sm:text-5xl"
+            >
+                Articles
+            </h1>
+        </header>
+
+        <div class="mt-20 sm:mt-24">
+            {
+                articles.length === 0 ? (
+                    <p class="leading-loose text-hai">Nothing here yet.</p>
+                ) : (
+                    <ul>
+                        {articles.map(({ entry, minutesRead }) => (
+                            <li class="mt-14 first:mt-0 sm:mt-16">
+                                <time
+                                    class="text-sm text-hai"
+                                    datetime={
+                                        entry.data.date
+                                            .toISOString()
+                                            .split("T")[0]
+                                    }
+                                >
+                                    {formatArticleDate(
+                                        entry.data.date,
+                                        entry.data.lang,
+                                    )}
+                                </time>
+                                <h2 class="mt-2 font-display text-2xl font-medium tracking-tight">
+                                    <a
+                                        href={`/articles/${entry.id}`}
+                                        class="transition-colors hover:text-hinata"
+                                    >
+                                        {entry.data.title}
+                                    </a>
+                                </h2>
+                                <p class="mt-2 text-sm text-hai">
+                                    {minutesRead} min
+                                    {
+                                        entry.data.tags.map((tag) => (
+                                            <>
+                                                {" "}
+                                                <span aria-hidden="true">·</span>
+                                                {" "}
+                                                {tag}
+                                            </>
+                                        ))
+                                    }
+                                </p>
+                            </li>
+                        ))}
+                    </ul>
+                )
+            }
+        </div>
+
+        <footer
+            class="mt-32 flex items-baseline justify-between text-sm text-hai sm:mt-40"
+        >
+            <p>&copy; 2026 Isaac Kwok</p>
+        </footer>
+    </main>
+</Layout>
