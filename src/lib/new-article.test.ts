@@ -37,7 +37,8 @@ describe("articleTemplate", () => {
             new Date("2026-07-05T12:00:00"),
         );
         expect(md).toContain("tags: []");
-        expect(md).toContain("lang: en");
+        expect(md).toContain("lang: zh-Hant");
+        expect(md).toContain('# lang must be "en" or "zh-Hant"');
         expect(md).toContain("# image: ../../assets/articles/");
         expect(md).toContain("# imageAlt:");
     });
