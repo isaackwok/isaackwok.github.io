@@ -16,7 +16,8 @@
 
 - `Layout.astro` owns the entire `<head>`: canonical URL, Open Graph/Twitter meta, JSON-LD Person schema, fonts. Pages pass `title` / `description` props — never add meta tags in a page.
 - Page navigation fades via Astro's `<ClientRouter />`: old page out (0.3s), blank kami hold (0.15s), new page in (0.3s). Timing config in `Layout.astro`, keyframes in `global.css`.
-- `/articles`, `/music` are intentional stubs rendered with `Placeholder.astro`.
+- `/music` is an intentional stub rendered with `Placeholder.astro`.
+- `/articles` is a Markdown/MDX content collection. Add an article: create `src/content/articles/<slug>.md` with frontmatter (`title`, `description`, `date` required; `tags`, `lang: zh-Hant`, `draft: true`, `image` + `imageAlt` optional). Keep files flat — no subfolders. Drafts render in dev but are excluded from production builds. Reading time is computed at build time by `src/lib/remark-reading-time.mjs`. Hero images live in `src/assets/articles/`, referenced relatively (`../../assets/articles/<file>`).
 - `/gallery` is a curated photo flow driven by a content collection. Add a photo: drop a JPEG (pre-resized to ~2000px longest edge) into `src/assets/gallery/` and add three lines to `src/data/gallery.yaml` (`image`, `alt`, `caption`); top-to-bottom order is display order.
 
 ## Development
@@ -28,6 +29,8 @@ astro dev --background
 ```
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+
+Unit tests (Vitest, co-located `src/**/*.test.ts`): `pnpm test`.
 
 ## Deployment
 
