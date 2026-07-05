@@ -61,17 +61,19 @@ const ogImage = image
 
     {
         image && imageAlt && (
-            <Image
-                src={image}
-                alt={imageAlt}
-                widths={[512, 1024]}
-                sizes="(min-width: 640px) 512px, calc(100vw - 48px)"
-                format="webp"
-                quality={80}
-                loading="eager"
-                fetchpriority="high"
-                class="mt-16 w-full sm:mt-20"
-            />
+            <div class="-mx-6 mt-16 sm:mx-0 sm:mt-20">
+                <Image
+                    src={image}
+                    alt={imageAlt}
+                    widths={[640, 1024, 1536]}
+                    sizes="(min-width: 640px) 512px, 100vw"
+                    format="webp"
+                    quality={80}
+                    loading="eager"
+                    fetchpriority="high"
+                    class="w-full"
+                />
+            </div>
         )
     }
 
