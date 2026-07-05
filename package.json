@@ -10,6 +10,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "test": "vitest run",
     "astro": "astro"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
     "yaml": "^2.9.0"
   },
   "devDependencies": {
-    "sharp": "^0.35.3"
+    "sharp": "^0.35.3",
+    "vitest": "^4.1.9"
   }
 }
