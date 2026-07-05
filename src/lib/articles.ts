@@ -1,5 +1,3 @@
-export type ArticleLang = "en" | "zh-Hant";
-
 /*
  * Pure draft filter shared by the index page and getStaticPaths so the
  * rule can't drift. Callers pass import.meta.env.PROD; taking it as a
@@ -12,9 +10,9 @@ export function isPublished(
     return !isProd || !entry.data.draft;
 }
 
-export function formatArticleDate(date: Date, lang: ArticleLang): string {
+export function formatArticleDate(date: Date): string {
     // UTC keeps frontmatter dates (parsed as UTC midnight) stable in any TZ
-    return new Intl.DateTimeFormat(lang === "zh-Hant" ? "zh-Hant" : "en-GB", {
+    return new Intl.DateTimeFormat("en-GB", {
         year: "numeric",
         month: "long",
         day: "numeric",

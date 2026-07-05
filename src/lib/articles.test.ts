@@ -17,13 +17,7 @@ describe("isPublished", () => {
 });
 
 describe("formatArticleDate", () => {
-    const date = new Date("2026-07-05");
-
-    it("formats English dates", () => {
-        expect(formatArticleDate(date, "en")).toBe("5 July 2026");
-    });
-
-    it("formats Traditional Chinese dates", () => {
-        expect(formatArticleDate(date, "zh-Hant")).toBe("2026年7月5日");
+    it("formats dates in English day-month-year form for every article", () => {
+        expect(formatArticleDate(new Date("2026-07-05"))).toBe("5 July 2026");
     });
 });
