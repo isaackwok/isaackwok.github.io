@@ -64,6 +64,121 @@
   letter-spacing: 0.5em;
 }
 
+/* 文章 prose — hand-rolled article typography; spacing over rules */
+.prose {
+  line-height: 2;
+}
+
+.prose > * + * {
+  margin-top: 1.5em;
+}
+
+.prose h2,
+.prose h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.6;
+}
+
+.prose h2 {
+  font-size: 1.5rem;
+  margin-top: 3em;
+}
+
+.prose h3 {
+  font-size: 1.2rem;
+  margin-top: 2.5em;
+}
+
+.prose a {
+  color: var(--color-hinata);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color 0.15s ease;
+}
+
+.prose a:hover {
+  color: var(--color-sumi);
+}
+
+.prose blockquote {
+  padding-left: 1.5rem;
+  color: var(--color-hai);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.5rem;
+}
+
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li + li {
+  margin-top: 0.5em;
+}
+
+.prose code {
+  background-color: color-mix(in srgb, var(--color-komorebi) 45%, transparent);
+  border-radius: 2px;
+  padding: 0.15em 0.4em;
+  font-size: 0.9em;
+}
+
+/* Shiki inlines a background on pre, hence the !important */
+.prose pre {
+  background-color: color-mix(
+    in srgb,
+    var(--color-komorebi) 30%,
+    transparent
+  ) !important;
+  border-radius: 2px;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.8;
+}
+
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: inherit;
+}
+
+.prose img {
+  width: 100%;
+  height: auto;
+}
+
+.prose hr {
+  border: 0;
+  margin-top: 4em;
+  text-align: center;
+}
+
+.prose hr::after {
+  content: "・・・";
+  color: var(--color-hai);
+  letter-spacing: 0.5em;
+}
+
+.prose hr + * {
+  margin-top: 4em;
+}
+
+/* CJK glyph density wants more breathing room */
+.prose:lang(zh-Hant) {
+  line-height: 2.15;
+  letter-spacing: 0.03em;
+}
+
 /* Page transition fades — sequenced by the animation config in Layout.astro */
 @keyframes page-fade-out {
   from {
